@@ -39,140 +39,36 @@ public class BankApplication extends JFrame {
 	public BankApplication() {
 		
 		super("Bank Application");
-		
-		int currentItem;
 		initComponents();
 	}
 	
 	public void initComponents() {
 		setLayout(new BorderLayout());
-		JPanel displayPanel = new JPanel(new MigLayout());
-		
-		accountIDLabel = new JLabel("Account ID: ");
-		accountIDTextField = new JTextField(15);
-		accountIDTextField.setEditable(false);
-		
-		displayPanel.add(accountIDLabel, "growx, pushx");
-		displayPanel.add(accountIDTextField, "growx, pushx, wrap");
-		
-		accountNumberLabel = new JLabel("Account Number: ");
-		accountNumberTextField = new JTextField(15);
-		accountNumberTextField.setEditable(false);
-		
-		displayPanel.add(accountNumberLabel, "growx, pushx");
-		displayPanel.add(accountNumberTextField, "growx, pushx, wrap");
 
-		surnameLabel = new JLabel("Last Name: ");
-		surnameTextField = new JTextField(15);
-		surnameTextField.setEditable(false);
-		
-		displayPanel.add(surnameLabel, "growx, pushx");
-		displayPanel.add(surnameTextField, "growx, pushx, wrap");
+		//NEW COde for creating the display panel
 
-		firstNameLabel = new JLabel("First Name: ");
-		firstNameTextField = new JTextField(15);
-		firstNameTextField.setEditable(false);
-		
-		displayPanel.add(firstNameLabel, "growx, pushx");
-		displayPanel.add(firstNameTextField, "growx, pushx, wrap");
+		add(this.createDisplayPanel(), BorderLayout.CENTER);
 
-		accountTypeLabel = new JLabel("Account Type: ");
-		accountTypeTextField = new JTextField(5);
-		accountTypeTextField.setEditable(false);
-		
-		displayPanel.add(accountTypeLabel, "growx, pushx");
-		displayPanel.add(accountTypeTextField, "growx, pushx, wrap");
-
-		balanceLabel = new JLabel("Balance: ");
-		balanceTextField = new JTextField(10);
-		balanceTextField.setEditable(false);
-		
-		displayPanel.add(balanceLabel, "growx, pushx");
-		displayPanel.add(balanceTextField, "growx, pushx, wrap");
-		
-		overdraftLabel = new JLabel("Overdraft: ");
-		overdraftTextField = new JTextField(10);
-		overdraftTextField.setEditable(false);
-		
-		displayPanel.add(overdraftLabel, "growx, pushx");
-		displayPanel.add(overdraftTextField, "growx, pushx, wrap");
-		
-		add(displayPanel, BorderLayout.CENTER);
-		
-		JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
-
-		nextItemButton = new JButton(new ImageIcon("src\\next.png"));
-		prevItemButton = new JButton(new ImageIcon("src\\prev.png"));
-		firstItemButton = new JButton(new ImageIcon("src\\first.png"));
-		lastItemButton = new JButton(new ImageIcon("src\\last.png"));
-		
-		buttonPanel.add(firstItemButton);
-		buttonPanel.add(prevItemButton);
-		buttonPanel.add(nextItemButton);
-		buttonPanel.add(lastItemButton);
-		
-		add(buttonPanel, BorderLayout.SOUTH);
+		//New Code for creating and returning the button panel
+		add(this.createButtonPanel(), BorderLayout.SOUTH);
 		
 		menuBar = new JMenuBar();
     	setJMenuBar(menuBar);
-		
-		navigateMenu = new JMenu("Navigate");
-    	
-    	nextItem = new JMenuItem("Next Item");
-    	prevItem = new JMenuItem("Previous Item");
-    	firstItem = new JMenuItem("First Item");
-    	lastItem = new JMenuItem("Last Item");
-    	findByAccount = new JMenuItem("Find by Account Number");
-    	findBySurname = new JMenuItem("Find by Surname");
-    	listAll = new JMenuItem("List All Records");
-    	
-    	navigateMenu.add(nextItem);
-    	navigateMenu.add(prevItem);
-    	navigateMenu.add(firstItem);
-    	navigateMenu.add(lastItem);
-    	navigateMenu.add(findByAccount);
-    	navigateMenu.add(findBySurname);
-    	navigateMenu.add(listAll);
+
+    	//NEW CODE
+		this.createNavigationMenu();
     	
     	menuBar.add(navigateMenu);
-    	
-    	recordsMenu = new JMenu("Records");
-    	
-    	createItem = new JMenuItem("Create Item");
-    	modifyItem = new JMenuItem("Modify Item");
-    	deleteItem = new JMenuItem("Delete Item");
-    	setOverdraft = new JMenuItem("Set Overdraft");
-    	setInterest = new JMenuItem("Set Interest");
-    	
-    	recordsMenu.add(createItem);
-    	recordsMenu.add(modifyItem);
-    	recordsMenu.add(deleteItem);
-    	recordsMenu.add(setOverdraft);
-    	recordsMenu.add(setInterest);
+    	// NEW code for creating the records menu
+    	this.createRecordsMenu();
     	
     	menuBar.add(recordsMenu);
-    	
-    	transactionsMenu = new JMenu("Transactions");
-    	
-    	deposit = new JMenuItem("Deposit");
-    	withdraw = new JMenuItem("Withdraw");
-    	calcInterest = new JMenuItem("Calculate Interest");
-    	
-    	transactionsMenu.add(deposit);
-    	transactionsMenu.add(withdraw);
-    	transactionsMenu.add(calcInterest);
+    	// NEW CODE for creating the transaction menu
+    	this.createTransactionMenu();
     	
     	menuBar.add(transactionsMenu);
     	
-    	fileMenu = new JMenu("File");
-    	
-    	open = new JMenuItem("Open File");
-    	save = new JMenuItem("Save File");
-    	saveAs = new JMenuItem("Save As");
-    	
-    	fileMenu.add(open);
-    	fileMenu.add(save);
-    	fileMenu.add(saveAs);
+    	this.createFileMenu();
     	
     	menuBar.add(fileMenu);
     	
@@ -436,28 +332,14 @@ public class BankApplication extends JFrame {
 				boolean found;
 				
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-					
 
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
-						
-						found = true;
-						
-						if(entry.getValue().getAccountType().trim().equals("Current")){
-							if(Double.parseDouble(toWithdraw) > entry.getValue().getBalance() + entry.getValue().getOverdraft())
-								JOptionPane.showMessageDialog(null, "Transaction exceeds overdraft limit");
-							else{
-								entry.getValue().setBalance(entry.getValue().getBalance() - Double.parseDouble(toWithdraw));
-								displayDetails(entry.getKey());
-							}
-						}
-						else if(entry.getValue().getAccountType().trim().equals("Deposit")){
-							if(Double.parseDouble(toWithdraw) <= entry.getValue().getBalance()){
-								entry.getValue().setBalance(entry.getValue().getBalance()-Double.parseDouble(toWithdraw));
-								displayDetails(entry.getKey());
-							}
-							else
-								JOptionPane.showMessageDialog(null, "Insufficient funds.");
-						}
+
+						//NEW CODE by creating a new method in BankAccount for withdraw money
+						if(entry.getValue().withdrawMoney(Double.parseDouble(toWithdraw))){
+						    displayDetails(entry.getKey());
+                        }
+
 					}					
 				}
 			}
@@ -477,6 +359,139 @@ public class BankApplication extends JFrame {
 			}
 		});		
 	}
+
+	//********************************************************************
+    //************************ METHODS ***********************************
+    //********************************************************************
+
+    private void createNavigationMenu(){
+        navigateMenu = new JMenu("Navigate");
+
+        nextItem = new JMenuItem("Next Item");
+        prevItem = new JMenuItem("Previous Item");
+        firstItem = new JMenuItem("First Item");
+        lastItem = new JMenuItem("Last Item");
+        findByAccount = new JMenuItem("Find by Account Number");
+        findBySurname = new JMenuItem("Find by Surname");
+        listAll = new JMenuItem("List All Records");
+
+        navigateMenu.add(nextItem);
+        navigateMenu.add(prevItem);
+        navigateMenu.add(firstItem);
+        navigateMenu.add(lastItem);
+        navigateMenu.add(findByAccount);
+        navigateMenu.add(findBySurname);
+        navigateMenu.add(listAll);
+    }
+
+    private void createRecordsMenu(){
+        recordsMenu = new JMenu("Records");
+
+        createItem = new JMenuItem("Create Item");
+        modifyItem = new JMenuItem("Modify Item");
+        deleteItem = new JMenuItem("Delete Item");
+        setOverdraft = new JMenuItem("Set Overdraft");
+        setInterest = new JMenuItem("Set Interest");
+
+        recordsMenu.add(createItem);
+        recordsMenu.add(modifyItem);
+        recordsMenu.add(deleteItem);
+        recordsMenu.add(setOverdraft);
+        recordsMenu.add(setInterest);
+    }
+
+    private void createTransactionMenu(){
+        transactionsMenu = new JMenu("Transactions");
+
+        deposit = new JMenuItem("Deposit");
+        withdraw = new JMenuItem("Withdraw");
+        calcInterest = new JMenuItem("Calculate Interest");
+
+        transactionsMenu.add(deposit);
+        transactionsMenu.add(withdraw);
+        transactionsMenu.add(calcInterest);
+    }
+
+    private void createFileMenu(){
+        fileMenu = new JMenu("File");
+
+        open = new JMenuItem("Open File");
+        save = new JMenuItem("Save File");
+        saveAs = new JMenuItem("Save As");
+
+        fileMenu.add(open);
+        fileMenu.add(save);
+        fileMenu.add(saveAs);
+    }
+
+    private JPanel createButtonPanel(){
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
+
+        nextItemButton = new JButton(new ImageIcon("src\\next.png"));
+        prevItemButton = new JButton(new ImageIcon("src\\prev.png"));
+        firstItemButton = new JButton(new ImageIcon("src\\first.png"));
+        lastItemButton = new JButton(new ImageIcon("src\\last.png"));
+
+        buttonPanel.add(firstItemButton);
+        buttonPanel.add(prevItemButton);
+        buttonPanel.add(nextItemButton);
+        buttonPanel.add(lastItemButton);
+        return buttonPanel;
+    }
+
+    private JPanel createDisplayPanel(){
+        JPanel displayPanel = new JPanel(new MigLayout());
+
+        accountIDLabel = new JLabel("Account ID: ");
+        accountIDTextField = new JTextField(15);
+        accountIDTextField.setEditable(false);
+
+        displayPanel.add(accountIDLabel, "growx, pushx");
+        displayPanel.add(accountIDTextField, "growx, pushx, wrap");
+
+        accountNumberLabel = new JLabel("Account Number: ");
+        accountNumberTextField = new JTextField(15);
+        accountNumberTextField.setEditable(false);
+
+        displayPanel.add(accountNumberLabel, "growx, pushx");
+        displayPanel.add(accountNumberTextField, "growx, pushx, wrap");
+
+        surnameLabel = new JLabel("Last Name: ");
+        surnameTextField = new JTextField(15);
+        surnameTextField.setEditable(false);
+
+        displayPanel.add(surnameLabel, "growx, pushx");
+        displayPanel.add(surnameTextField, "growx, pushx, wrap");
+
+        firstNameLabel = new JLabel("First Name: ");
+        firstNameTextField = new JTextField(15);
+        firstNameTextField.setEditable(false);
+
+        displayPanel.add(firstNameLabel, "growx, pushx");
+        displayPanel.add(firstNameTextField, "growx, pushx, wrap");
+
+        accountTypeLabel = new JLabel("Account Type: ");
+        accountTypeTextField = new JTextField(5);
+        accountTypeTextField.setEditable(false);
+
+        displayPanel.add(accountTypeLabel, "growx, pushx");
+        displayPanel.add(accountTypeTextField, "growx, pushx, wrap");
+
+        balanceLabel = new JLabel("Balance: ");
+        balanceTextField = new JTextField(10);
+        balanceTextField.setEditable(false);
+
+        displayPanel.add(balanceLabel, "growx, pushx");
+        displayPanel.add(balanceTextField, "growx, pushx, wrap");
+
+        overdraftLabel = new JLabel("Overdraft: ");
+        overdraftTextField = new JTextField(10);
+        overdraftTextField.setEditable(false);
+
+        displayPanel.add(overdraftLabel, "growx, pushx");
+        displayPanel.add(overdraftTextField, "growx, pushx, wrap");
+        return displayPanel;
+    }
 
 	//************** NEW METHOD FOR GETTING THE TABLE KEY LIST
 	private ArrayList<Integer> getTableKeyList(){
