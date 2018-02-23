@@ -364,6 +364,9 @@ public class BankApplication extends JFrame {
     //************************ METHODS ***********************************
     //********************************************************************
 
+
+    ////******************************   GUI COMPONENTS
+    //*************************************************
     private void createNavigationMenu(){
         navigateMenu = new JMenu("Navigate");
 
@@ -492,6 +495,8 @@ public class BankApplication extends JFrame {
         displayPanel.add(overdraftTextField, "growx, pushx, wrap");
         return displayPanel;
     }
+
+    ////******************************   GUI COMPONENTS END ********
 
 	//************** NEW METHOD FOR GETTING THE TABLE KEY LIST
 	private ArrayList<Integer> getTableKeyList(){

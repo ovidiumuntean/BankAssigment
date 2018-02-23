@@ -130,11 +130,6 @@ public class CreateBankDialog extends JFrame {
                 String balanceStr = balanceTextField.getText();
                 String overdraftStr = overdraftTextField.getText();
 
-
-                double balance;
-                double overdraft;
-
-
                 if (accountNumber != null && accountNumber.length() == 8 && surname != null && firstName != null && accountType != null) {
                     try {
 
