@@ -212,21 +212,6 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		ActionListener next = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveOpenValues();
-				// No next if at end of list.
-				if (currentItem != (table.size()-1)) {
-					// Move to next item.
-						currentItem++;
-					while(!table.containsKey(currentItem) ){
-						currentItem++;
-					}
-					displayDetails(currentItem);			
-				}				
-			}
-		};
-		
 		ActionListener next1 = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
@@ -409,13 +394,8 @@ public class BankApplication extends JFrame {
 					   
 					 if(sName.equalsIgnoreCase((entry.getValue().getSurname().trim()))){
 						 found = true;
-						 accountIDTextField.setText(entry.getValue().getAccountID()+"");
-						 accountNumberTextField.setText(entry.getValue().getAccountNumber());
-						 surnameTextField.setText(entry.getValue().getSurname());
-						 firstNameTextField.setText(entry.getValue().getFirstName());
-						 accountTypeTextField.setText(entry.getValue().getAccountType());
-						 balanceTextField.setText(entry.getValue().getBalance()+"");
-						 overdraftTextField.setText(entry.getValue().getOverdraft()+"");
+						 //Refactored Code After creating the method setDisplayAccountDetails()
+						 setDisplayAccountDetails(entry.getValue());
 					 }
 				 }		
 				 if(found)
@@ -435,14 +415,8 @@ public class BankApplication extends JFrame {
 					   
 					 if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						 found = true;
-						 accountIDTextField.setText(entry.getValue().getAccountID()+"");
-						 accountNumberTextField.setText(entry.getValue().getAccountNumber());
-						 surnameTextField.setText(entry.getValue().getSurname());
-						 firstNameTextField.setText(entry.getValue().getFirstName());
-						 accountTypeTextField.setText(entry.getValue().getAccountType());
-						 balanceTextField.setText(entry.getValue().getBalance()+"");
-						 overdraftTextField.setText(entry.getValue().getOverdraft()+"");						
-						 
+						 //Refactored Code After creating the method setDisplayAccountDetails()
+						 setDisplayAccountDetails(entry.getValue());
 					 }			 
 				 }
 				 if(found)
@@ -529,7 +503,17 @@ public class BankApplication extends JFrame {
 			table.get(currentItem).setSurname(surnameTextField.getText());
 			table.get(currentItem).setFirstName(firstNameTextField.getText());
 		}
-	}	
+	}
+
+	public void setDisplayAccountDetails(BankAccount account){
+		accountIDTextField.setText(account.getAccountID()+"");
+		accountNumberTextField.setText(account.getAccountNumber());
+		surnameTextField.setText(account.getSurname());
+		firstNameTextField.setText(account.getFirstName());
+		accountTypeTextField.setText(account.getAccountType());
+		balanceTextField.setText(account.getBalance()+"");
+		overdraftTextField.setText(account.getOverdraft()+"");
+	}
 	
 	public void displayDetails(int currentItem) {	
 				
