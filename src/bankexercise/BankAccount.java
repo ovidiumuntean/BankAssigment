@@ -31,7 +31,7 @@ public class BankAccount {
 
     // NEW METHOD Withdraw money
     public boolean withdrawMoney(double amount) {
-        if (this.accountType.equals("Current")) {
+        if (this.accountType.trim().equals("Current")) {
             if (amount > this.balance + this.overdraft) {
                 JOptionPane.showMessageDialog(null, "Transaction exceeds overdraft limit");
                 return false;
@@ -39,7 +39,7 @@ public class BankAccount {
                 this.balance = this.balance - amount;
                 return true;
             }
-        } else if (this.accountType.equals("Deposit")) {
+        } else if (this.accountType.trim().equals("Deposit")) {
             if (amount <= this.balance) {
                 this.balance = this.balance - amount;
                 return true;
@@ -48,7 +48,7 @@ public class BankAccount {
                 return false;
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Invalid account type.");
+            JOptionPane.showMessageDialog(null, "Invalid account type. " + accountType);
             return false;
         }
     }
